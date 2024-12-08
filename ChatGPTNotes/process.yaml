@@ -1,0 +1,32 @@
+steps:
+  - step: "Upload the PDF"
+    user_action: "Click the 'Upload PDF' button to upload a document."
+    result: "The PDF content is displayed in the PDF TextArea."
+
+  - step: "View Metadata"
+    user_action: "Click the 'View Metadata' button to see the metadata of the uploaded PDF (file name, page count, line count, character count, format)."
+    result: "The metadata is displayed to the user."
+
+  - step: "Set Character Buffer Size"
+    user_action: "Adjust the buffer size using a slider to affect the ingestion speed and quality."
+    result: "The buffer size is displayed in real-time."
+
+  - step: "API Configuration"
+    user_action: "Optionally, upload a new API configuration file (YAML) to replace all settings."
+    result: "The new API settings are applied."
+
+  - step: "Start Redaction"
+    user_action: "Click the 'Start Redacting' button to begin processing the PDF."
+    result: "The PDF’s text is sent to the Redaction API for processing. The API returns the redacted text and the found names."
+
+  - step: "Inspection and Updates"
+    user_action: "The Inspection Text Area displays the original_text, names, and redacted_text in real-time."
+    result: "The redacted content continuously updates, and users can review it."
+
+  - step: "Redacted TextArea"
+    user_action: "The Redacted TextArea appends the redacted text continuously as it is processed."
+    result: "The full redacted content is displayed in this area."
+
+  - step: "Download Redacted File"
+    user_action: "Click the 'Download' button."
+    result: "A timestamped redacted version of the document is downloaded."

@@ -1,0 +1,32 @@
+
+header_section:
+  h1: "Redaction App"
+  h2: "Protecting Patient Records"
+  p: "Brief description (loaded from YAML)."
+
+pdf_upload_and_display:
+  input_type: "file"  # For PDF upload
+  textarea:  # PDF TextArea (scrollable, 85% wide, 500px high)
+
+metadata_button:
+  button: "View Metadata"
+
+buffer_size_panel:
+  div: "Panel for the buffer slider and 'Start Redacting' button"
+  input_type: "range"  # Slider to set buffer size
+  span: "Display current buffer size in real-time."
+  button: "Start Redacting"
+
+inspection_text_area:
+  textarea: "For original_text, names, and redacted_text (85% wide, 500px high)"
+
+redacted_textarea:
+  textarea: "For appending redacted text (85% wide, 500px high)"
+
+download_button:
+  button: "Download"
+
+api_configuration_tab:
+  div: "Tab container for API configuration"
+  button: "Upload Configuration File (to replace all settings)"
+  p: "Display current API settings (optional, if needed for visibility)."

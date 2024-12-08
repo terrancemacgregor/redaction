@@ -1,0 +1,68 @@
+title: Redaction Engine
+
+purpose: To build a redaction engine that allows users to upload PDFs, extract and redact names, and download the redacted file while tracking extracted names.
+
+deliverable: A sequence diagram that outlines the process of uploading a PDF, redacting names, and downloading the redacted file, which can be used to guide the development of the software.
+
+
+actor: User
+participant: Web App
+participant: Redaction API
+participant: PDF TextArea
+participant: Inspection Text Area
+participant: Redacted TextArea
+
+"All text areas should be 85% wide and 500 px high."
+
+"The github repository can be found at https://github.com/terrancemacgregor/silverstay-demo. The development environment is a Mac Mini with ARM-64 architecture and Silicon Graphics. The IDE used is IntelliJ."
+
+
+--|: **PDF Upload and Display**
+
+User->Web App: Upload PDF file
+
+Web App->PDF TextArea: Display PDF text contents in scrollable area
+
+Web App->User: Show PDF metadata (file name, page count, line count, character count, format)
+
+User->Web App: Set character buffer processing size
+
+
+--|: **API Configuration**
+
+User->Web App: Select API configuration tab
+
+Web App->User: Display current Redaction API settings
+
+User->Web App: Upload configuration file to adjust API settings
+
+
+--|: **Redaction Process**
+
+User->Web App: Click "Redact" button to start processing
+
+Web App->Redaction API: Send text buffer to http://127.0.0.1:8001/redact_names
+
+Redaction API->Web App: Return redacted text and found names
+
+Web App->Inspection Text Area: Display API output (original_text, found_names, redacted_text)
+
+Web App->Redacted TextArea: Append redacted text
+
+
+--|: **Continuous Processing**
+
+Web App->Redaction API: Send next text buffer
+
+Redaction API->Web App: Return redacted text and found names
+
+Web App->Inspection Text Area: Update with new API output
+
+Web App->Redacted TextArea: Append new redacted text
+
+
+--|: **Download Redacted File**
+
+User->Web App: Click download button
+
+Web App->User: Provide YYYYMMDD_HHMMSS_filename.txt containing redacted text
