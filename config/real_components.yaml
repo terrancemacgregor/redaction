@@ -1,0 +1,9 @@
+
+header_section:
+  h1: "Redaction App"
+  h2: "Protecting Patient Names"
+  p: "The application is a redaction engine designed to allow users to upload PDF files, extract and redact "
+
+pdf_upload_and_display:
+  textarea:  # PDF TextArea (scrollable, 85% wide, 500px high)
+  button: "Upload PDF"

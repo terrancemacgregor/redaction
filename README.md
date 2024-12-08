@@ -1,13 +1,34 @@
 
 # Redaction Project
-The application is a redaction engine designed to allow users to upload PDF files, extract and redact sensitive information such as names, and download the redacted document. It provides an interface where users can upload PDFs, view the metadata (like file name, page count, etc.), and adjust the character buffer size for text processing. The redaction process is triggered by a "Redact" button that sends text buffers to a Redaction API, which returns the redacted text and extracted names.
-The application continuously processes the PDF content, updating the Inspection Text Area with API outputs (original text, found names, and redacted text) while appending redacted text to the Redacted TextArea. After the redaction is complete, the user can download a text file with the redacted content, named with a timestamp. This process is facilitated through an easy-to-use web app, with a focus on streamlining document handling and redaction workflows.
+The application is a redaction engine designed to allow users to upload PDF files,
+extract and redact sensitive information such as names, and download the redacted document.
+It provides an interface where users can upload PDFs, view the metadata (like file name,
+page count, etc.), and adjust the character buffer size for text processing.
+The redaction process is triggered by a "Redact" button that sends text buffers to a
+Redaction API, which returns the redacted text and extracted names.
+## PDF  Processing 
+
+The application continuously processes the PDF content, updating the Inspection Text Area
+with API outputs (original text, found names, and redacted text) while appending redacted
+text to the Redacted TextArea. After the redaction is complete, the user can download a
+text file with the redacted content, named with a timestamp. This process is facilitated
+through an easy-to-use web app, with a focus on streamlining document handling and
+redaction workflows.
+
+PDF.js Library Documentation:
+https://mozilla.github.io/pdf.js/
+
+PDF.js Worker Integration:
+https://github.com/mozilla/pdf.js#including-the-pdfjs-library
+
+## Running Code
+Start the server with this command.  It uses the vite.config.ts file to launch the
+server on here: [127.0.0.1:8001](127.0.0.1:8001)
 
 
 
 ## Technical Project Overview
 This is a React project built with TypeScript and Vite. It is designed for efficient development with fast bundling and minimal configuration.
-
 This project leverages Vite for development, providing a fast and optimized build system, and React with TypeScript for building a modern, maintainable frontend.
 
 ### Features
@@ -85,7 +106,3 @@ This project is pre-configured with Vite and TypeScript, ready for further custo
 ## Contributing
 
 Feel free to fork this project and submit pull requests if you have improvements or fixes. Please follow standard Git conventions and ensure your code adheres to the project's coding style.
-
-## License
-
-This project is licensed under the MIT License.
