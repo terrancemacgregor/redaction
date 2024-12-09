@@ -8,7 +8,6 @@ import HeaderSection from "./components/HeaderSection";
 import ProcessingPanel from "./components/ProcessingPanel";
 import BufferPanel from "./components/BufferPanel";
 
-
 pdfjsLib.GlobalWorkerOptions.workerSrc = "/node_modules/pdfjs-dist/build/pdf.worker.min.mjs";
 
 const App: React.FC = () => {
@@ -17,7 +16,9 @@ const App: React.FC = () => {
     const [fileContent, setFileContent] = useState<string>("");
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [redactedOutput, setRedactedOutput] = useState<string>("");
-
+    const [redactedTableData, setRedactedTableData] = useState<
+        { original_text: string; names: string[]; redacted_text: string }[]
+    >([]);
 
     const handleButtonClick = () => {
         fileInputRef.current?.click();
@@ -43,8 +44,9 @@ const App: React.FC = () => {
     const handleRedact = async (bufferSize: number) => {
         let remainingText = fileContent;
 
-        // Reset redacted output before starting
-        setRedactedOutput("");
+        // Reset table data and redacted output before starting
+        setRedactedTableData([]);
+        setRedactedOutput(""); // Clear previous output
 
         while (remainingText.length > 0) {
             // Determine the substring to send
@@ -66,10 +68,24 @@ const App: React.FC = () => {
                 });
                 const result = await response.json();
 
-                if (result.redacted_text) {
-                    // Append the new redacted text to the state
-                    setRedactedOutput((prev) => `${prev}${result.redacted_text} `);
+                // Debugging log to check API response
+                console.log("API Response:", result);
 
+                if (result.original_text && result.found_names && result.redacted_text) {
+                    // Append the new row to the table
+                    setRedactedTableData((prev) => [
+                        ...prev,
+                        {
+                            original_text: result.original_text,
+                            names: result.found_names, // Keep found_names as a string
+                            redacted_text: result.redacted_text,
+                        },
+                    ]);
+
+                    // Append redacted text to the redacted output
+                    setRedactedOutput((prev) => `${prev}${result.redacted_text} `);
+                } else {
+                    console.error("API response does not have the expected structure.");
                 }
             } catch (error) {
                 console.error("Error redacting text:", error);
@@ -105,7 +121,6 @@ const App: React.FC = () => {
             {/* Upload Button */}
             <UploadFileButton onFileChange={handleFileChange} />
 
-
             {selectedFile && (
                 <ProcessingPanel fileName={selectedFile.name} onGetFileInfo={handleGetFileInfo} />
             )}
@@ -117,15 +132,47 @@ const App: React.FC = () => {
                 <>
                     <BufferPanel onRedact={handleRedact} />
                     <div style={{ textAlign: "center", marginTop: "20px" }}>
-                        <textarea
-                            style={{ width: "80%", height: "300px", padding: "10px", fontSize: "1rem" }}
-                            value={redactedOutput}
-                             readOnly
-                        ></textarea>
+            <textarea
+                style={{ width: "80%", height: "300px", padding: "10px", fontSize: "1rem" }}
+                value={redactedOutput}
+                readOnly
+            ></textarea>
                     </div>
+
+                    {redactedTableData.length > 0 && (
+                        <div style={{ textAlign: "center", marginTop: "20px" }}>
+                            <table
+                                style={{
+                                    width: "80%",
+                                    margin: "0 auto",
+                                    borderCollapse: "collapse",
+                                    textAlign: "left",
+                                }}
+                            >
+                                <thead>
+                                <tr>
+                                    <th style={{ width: "33%", borderBottom: "1px solid #ccc", padding: "10px" }}>Original Text</th>
+                                    <th style={{ width: "33%", borderBottom: "1px solid #ccc", padding: "10px" }}>Names</th>
+                                    <th style={{ width: "33%", borderBottom: "1px solid #ccc", padding: "10px" }}>Redacted Text</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {redactedTableData.map((row, index) => (
+                                    <tr key={index}>
+                                        <td style={{ padding: "10px", borderBottom: "1px solid #ccc" }}>{row.original_text}</td>
+                                        <td style={{ padding: "10px", borderBottom: "1px solid #ccc" }}>
+                                            {row.names} {/* Display names directly as a string */}
+                                        </td>
+                                        <td style={{ padding: "10px", borderBottom: "1px solid #ccc" }}>{row.redacted_text}</td>
+                                    </tr>
+                                ))}
+                                </tbody>
+                            </table>
+                        </div>
+                    )}
+
                 </>
             )}
-
 
             {/* Modal for File Info */}
             {isModalOpen && selectedFile && (
@@ -136,9 +183,6 @@ const App: React.FC = () => {
                     onClose={closeModal}
                 />
             )}
-
-
-
         </div>
     );
 };
